@@ -1,0 +1,43 @@
+type PokemonDimension {
+  minimum: String
+  maximum: String
+}
+
+type Pokemon {
+  id: ID!
+  number: String
+  name: String
+  weight: PokemonDimension
+  height: PokemonDimension
+  classification: String
+  types: [String]
+  resistant: [String]
+  attacks: PokemonAttack
+  weaknesses: [String]
+  fleeRate: Float
+  maxCP: Int
+  evolutions: [Pokemon]
+  evolutionRequirements: PokemonEvolutionRequirement
+  maxHP: Int
+  image: String
+}
+
+type PokemonEvolutionRequirement {
+  amount: Int
+  name: String
+}
+
+type PokemonAttack {
+  fast: [Attack]
+  special: [Attack]
+}
+
+type Attack {
+  name: String
+  type: String
+  damage: Int
+}
+
+type Query {
+  pokemon(name: String!): Pokemon
+}
