@@ -1,0 +1,27 @@
+name: Deploy to DigitalOcean Container Registry
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to match your main branch name
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push to DigitalOcean Container Registry
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  # Add your Docker username as a secret in GitHub repository settings
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  # Add your Docker password/token as a secret
+          DIGITALOCEAN_REGISTRY: registry.digitalocean.com/${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REGISTRY }}:latest  # Adjust registry and image name
+        run: |
+          docker buildx build --platform linux/amd64 -t $DIGITALOCEAN_REGISTRY .
+          docker login registry.digitalocean.com -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push $DIGITALOCEAN_REGISTRY
