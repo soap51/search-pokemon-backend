@@ -3,7 +3,7 @@ name: Deploy to DigitalOcean Container Registry
 on:
   push:
     branches:
-      - main  # Adjust this to match your main branch name
+      - master  # Adjust this to match your main branch name
 
 jobs:
   build-and-deploy:
